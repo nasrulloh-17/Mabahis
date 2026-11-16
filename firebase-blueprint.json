@@ -1,0 +1,232 @@
+{
+  "entities": {
+    "RegistrationForm": {
+      "title": "RegistrationForm",
+      "description": "Online registration form definition with custom fields and automated email notification templates.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 140
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "scheduleLabel": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "locationLabel": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "imageUrl": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "maxQuota": {
+          "type": "number"
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "customFields": {
+          "type": "array"
+        },
+        "emailSubjectTemplate": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "emailBodyTemplate": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "createdBy": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "category",
+        "description",
+        "scheduleLabel",
+        "locationLabel",
+        "imageUrl",
+        "maxQuota",
+        "isActive",
+        "customFields",
+        "emailSubjectTemplate",
+        "emailBodyTemplate",
+        "createdBy",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "RegistrationSubmission": {
+      "title": "RegistrationSubmission",
+      "description": "Submitted registration entry including automated email delivery status and preview metadata.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "registrationCode": {
+          "type": "string",
+          "maxLength": 40,
+          "pattern": "^REG-[A-Z0-9-]+$"
+        },
+        "formId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "formTitle": {
+          "type": "string",
+          "maxLength": 140
+        },
+        "fullName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "customAnswers": {
+          "type": "object"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["menunggu", "diterima", "ditolak"]
+        },
+        "emailStatus": {
+          "type": "string",
+          "enum": ["terkirim", "uji_ethereal", "gagal", "menunggu"]
+        },
+        "emailMode": {
+          "type": "string",
+          "enum": ["smtp", "ethereal", "none"]
+        },
+        "emailMessageId": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "emailPreviewUrl": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "emailError": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "submitterUid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "registrationCode",
+        "formId",
+        "formTitle",
+        "fullName",
+        "email",
+        "phone",
+        "organization",
+        "notes",
+        "customAnswers",
+        "status",
+        "emailStatus",
+        "emailMode",
+        "emailMessageId",
+        "emailPreviewUrl",
+        "emailError",
+        "submitterUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Registered administrator UID record.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/forms/{formId}": {
+      "schema": {
+        "$ref": "#/entities/RegistrationForm"
+      },
+      "description": "Publicly readable active registration forms managed by administrators."
+    },
+    "/registrations/{registrationId}": {
+      "schema": {
+        "$ref": "#/entities/RegistrationSubmission"
+      },
+      "description": "Registration submissions with PII isolated to the owner or administrator."
+    },
+    "/admins/{adminUid}": {
+      "schema": {
+        "$ref": "#/entities/AdminUser"
+      },
+      "description": "Administrator registry for role verification."
+    }
+  }
+}

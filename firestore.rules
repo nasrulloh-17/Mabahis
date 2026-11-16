@@ -1,0 +1,196 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net (Default Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Shared Hardened Primitives
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isVerifiedUser() && (
+        request.auth.token.email == 'muhammadnasrulloh853@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isStarterFormId(formId) {
+      return formId in [
+        'seminar-teknologi-2026',
+        'beasiswa-pelatihan-2026',
+        'relawan-event-2026',
+        'keanggotaan-komunitas-2026'
+      ];
+    }
+
+    function isFormActiveForSubmission(formId) {
+      return exists(/databases/$(database)/documents/forms/$(formId))
+        ? get(/databases/$(database)/documents/forms/$(formId)).data.isActive == true
+        : isStarterFormId(formId);
+    }
+
+    function isValidFormData(data, formId) {
+      return data.keys().hasAll([
+        'id', 'title', 'category', 'description', 'scheduleLabel',
+        'locationLabel', 'imageUrl', 'maxQuota', 'isActive',
+        'customFields', 'emailSubjectTemplate', 'emailBodyTemplate',
+        'createdBy', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'title', 'category', 'description', 'scheduleLabel',
+        'locationLabel', 'imageUrl', 'maxQuota', 'isActive',
+        'customFields', 'emailSubjectTemplate', 'emailBodyTemplate',
+        'createdBy', 'createdAt', 'updatedAt'
+      ]) &&
+      data.id == formId &&
+      data.title is string && data.title.size() >= 3 && data.title.size() <= 140 &&
+      data.category is string && data.category.size() >= 2 && data.category.size() <= 60 &&
+      data.description is string && data.description.size() >= 5 && data.description.size() <= 600 &&
+      data.scheduleLabel is string && data.scheduleLabel.size() <= 120 &&
+      data.locationLabel is string && data.locationLabel.size() <= 120 &&
+      data.imageUrl is string && data.imageUrl.size() <= 300 &&
+      data.maxQuota is int && data.maxQuota >= 1 && data.maxQuota <= 100000 &&
+      data.isActive is bool &&
+      data.customFields is list && data.customFields.size() <= 10 &&
+      (data.customFields.size() == 0 || data.customFields[0] is map) &&
+      data.emailSubjectTemplate is string && data.emailSubjectTemplate.size() >= 3 && data.emailSubjectTemplate.size() <= 200 &&
+      data.emailBodyTemplate is string && data.emailBodyTemplate.size() >= 10 && data.emailBodyTemplate.size() <= 2000 &&
+      data.createdBy is string && data.createdBy.size() >= 1 && data.createdBy.size() <= 128 &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidRegistrationData(data, registrationId) {
+      return data.keys().hasAll([
+        'id', 'registrationCode', 'formId', 'formTitle', 'fullName',
+        'email', 'phone', 'organization', 'notes', 'customAnswers',
+        'status', 'emailStatus', 'emailMode', 'emailMessageId',
+        'emailPreviewUrl', 'emailError', 'submitterUid',
+        'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'registrationCode', 'formId', 'formTitle', 'fullName',
+        'email', 'phone', 'organization', 'notes', 'customAnswers',
+        'status', 'emailStatus', 'emailMode', 'emailMessageId',
+        'emailPreviewUrl', 'emailError', 'submitterUid',
+        'createdAt', 'updatedAt'
+      ]) &&
+      data.id == registrationId &&
+      data.registrationCode is string && data.registrationCode.size() >= 6 && data.registrationCode.size() <= 40 &&
+      data.registrationCode.matches('^REG-[A-Z0-9\\-]+$') &&
+      isValidId(data.formId) &&
+      data.formTitle is string && data.formTitle.size() >= 3 && data.formTitle.size() <= 140 &&
+      data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 120 &&
+      data.email is string && data.email.size() >= 5 && data.email.size() <= 160 &&
+      data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$') &&
+      data.phone is string && data.phone.size() >= 6 && data.phone.size() <= 32 &&
+      data.organization is string && data.organization.size() <= 160 &&
+      data.notes is string && data.notes.size() <= 1000 &&
+      data.customAnswers is map && data.customAnswers.size() <= 12 &&
+      data.status in ['menunggu', 'diterima', 'ditolak'] &&
+      data.emailStatus in ['terkirim', 'uji_ethereal', 'gagal', 'menunggu'] &&
+      data.emailMode in ['smtp', 'ethereal', 'none'] &&
+      data.emailMessageId is string && data.emailMessageId.size() <= 240 &&
+      data.emailPreviewUrl is string && data.emailPreviewUrl.size() <= 400 &&
+      data.emailError is string && data.emailError.size() <= 300 &&
+      data.submitterUid is string && data.submitterUid.size() <= 128 &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    // Collection: /forms/{formId}
+    match /forms/{formId} {
+      allow get: if isValidId(formId) && (existing().isActive == true || isAdmin());
+      allow list: if resource.data.isActive == true || isAdmin();
+
+      allow create: if isAdmin() &&
+        isValidId(formId) &&
+        isValidFormData(incoming(), formId) &&
+        incoming().createdBy == request.auth.uid &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+
+      allow update: if isAdmin() &&
+        isValidId(formId) &&
+        isValidFormData(incoming(), formId) &&
+        incoming().id == existing().id &&
+        incoming().createdBy == existing().createdBy &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'title', 'category', 'description', 'scheduleLabel',
+          'locationLabel', 'imageUrl', 'maxQuota', 'isActive',
+          'customFields', 'emailSubjectTemplate', 'emailBodyTemplate',
+          'updatedAt'
+        ]);
+
+      allow delete: if isAdmin() && isValidId(formId);
+    }
+
+    // Collection: /registrations/{registrationId}
+    match /registrations/{registrationId} {
+      allow get: if isValidId(registrationId) && (
+        isAdmin() ||
+        (isVerifiedUser() && existing().submitterUid == request.auth.uid)
+      );
+
+      allow list: if isAdmin() || (
+        isVerifiedUser() && resource.data.submitterUid == request.auth.uid
+      );
+
+      allow create: if isValidId(registrationId) &&
+        isValidRegistrationData(incoming(), registrationId) &&
+        incoming().status == 'menunggu' &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        (
+          (isVerifiedUser() && incoming().submitterUid == request.auth.uid) ||
+          (!isSignedIn() && incoming().submitterUid == '')
+        ) &&
+        isFormActiveForSubmission(incoming().formId);
+
+      allow update: if isAdmin() &&
+        isValidId(registrationId) &&
+        isValidRegistrationData(incoming(), registrationId) &&
+        incoming().id == existing().id &&
+        incoming().registrationCode == existing().registrationCode &&
+        incoming().formId == existing().formId &&
+        incoming().submitterUid == existing().submitterUid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'status', 'emailStatus', 'emailMode', 'emailMessageId',
+          'emailPreviewUrl', 'emailError', 'updatedAt'
+        ]);
+
+      allow delete: if isAdmin() && isValidId(registrationId);
+    }
+
+    // Collection: /admins/{adminUid}
+    match /admins/{adminUid} {
+      allow read: if isAdmin() && isValidId(adminUid);
+      allow write: if false;
+    }
+  }
+}

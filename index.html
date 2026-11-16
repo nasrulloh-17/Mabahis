@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MABAHIS — Portal Pendaftaran Pondok &amp; Lomba</title>
+    <meta
+      name="description"
+      content="Portal formulir pendaftaran online Pondok Pesantren dan Lomba MABAHIS yang terhubung ke Google Form, Spreadsheet Database_Mabahis, dan notifikasi email otomatis."
+    />
+    <meta
+      property="og:title"
+      content="MABAHIS — Portal Pendaftaran Pondok &amp; Lomba"
+    />
+    <meta
+      property="og:description"
+      content="Portal formulir pendaftaran online Pondok Pesantren dan Lomba MABAHIS yang terhubung ke Google Form, Spreadsheet Database_Mabahis, dan notifikasi email otomatis."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..600;1,9..40,400..600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="#portal" class="brand" data-nav="portal">MABAHIS</a>
+
+        <nav class="nav-links" aria-label="Navigasi utama">
+          <button type="button" class="nav-link is-active" data-nav="portal">
+            Daftar Formulir
+          </button>
+          <button type="button" class="nav-link" data-nav="guide">
+            Cara Kerja &amp; Skrip
+          </button>
+          <button type="button" class="nav-link" data-nav="integrations">
+            Hubungkan Google
+          </button>
+          <button type="button" class="nav-link" data-nav="history">
+            Riwayat Kiriman
+          </button>
+        </nav>
+
+        <div class="topbar-action">
+          <button type="button" class="btn btn-primary" id="btn-hero-cta">
+            Isi Formulir
+          </button>
+        </div>
+      </div>
+
+      <nav class="mobile-nav" aria-label="Navigasi seluler">
+        <button type="button" class="mobile-nav-btn is-active" data-nav="portal">
+          Formulir
+        </button>
+        <button type="button" class="mobile-nav-btn" data-nav="guide">
+          Skrip Email
+        </button>
+        <button type="button" class="mobile-nav-btn" data-nav="integrations">
+          Spreadsheet
+        </button>
+        <button type="button" class="mobile-nav-btn" data-nav="history">
+          Riwayat
+        </button>
+      </nav>
+    </header>
+
+    <main id="app-main">
+      <!-- VIEW 1: PORTAL & FORM CATALOG -->
+      <div id="view-portal" class="view-section">
+        <section class="hero">
+          <div class="container">
+            <div class="hero-grid">
+              <div class="hero-copy">
+                <p class="kicker">Portal Pendaftaran Resmi</p>
+                <h1 class="hero-title">
+                  Pendaftaran Pondok Pesantren &amp; Lomba MABAHIS
+                </h1>
+                <p class="hero-desc">
+                  Silakan pilih formulir pendaftaran di bawah ini. Bukti pendaftaran akan dikirimkan secara otomatis ke email Anda.
+                </p>
+                <div class="hero-actions">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-lg"
+                    id="btn-scroll-catalog"
+                  >
+                    Pilih Formulir Pendaftaran
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M5 12h14"></path>
+                      <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="hero-media">
+                <img
+                  src="/assets/aistudio/IMG_3851_56da3086.JPG"
+                  alt="Panggung utama dan sambutan MABAHIS 2026 Musabaqoh Ma'ahid Islamiyah ke-V"
+                  referrerpolicy="no-referrer"
+                  id="hero-img"
+                />
+                <div class="hero-media-scrim" aria-hidden="true"></div>
+                <div class="hero-media-caption">
+                  <span>MABAHIS 2026</span>
+                  <span aria-hidden="true">·</span>
+                  <span>Musabaqoh Ma'ahid Islamiyah ke-V</span>
+                </div>
+                <div class="img-fallback is-hidden" id="hero-img-fallback">
+                  <span>Portal Pendaftaran MABAHIS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="catalog-section" id="katalog-formulir">
+          <div class="container">
+            <div class="catalog-header">
+              <div>
+                <h2 class="section-title">Pilih Formulir Pendaftaran</h2>
+              </div>
+            </div>
+
+            <div class="catalog-grid" id="catalog-grid"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- VIEW 2: ACTIVE FORM WORKSPACE -->
+      <div id="view-form" class="view-section is-hidden">
+        <div class="container workspace-wrap">
+          <button type="button" class="back-link" id="btn-back-portal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m12 19-7-7 7-7"></path>
+              <path d="M19 12H5"></path>
+            </svg>
+            Kembali ke Daftar Formulir
+          </button>
+
+          <div id="form-workspace-content"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: GUIDE & APPS SCRIPT GENERATOR -->
+      <div id="view-guide" class="view-section is-hidden">
+        <div class="container page-wrap">
+          <div class="page-head">
+            <p class="kicker">Panduan Implementasi Lengkap</p>
+            <h1 class="page-title">
+              Cara Kerja Website Statis + Google Form + Spreadsheet + Email Otomatis
+            </h1>
+            <p class="page-lead">
+              Anda tidak perlu menyewa server backend atau mengatur SMTP secara manual. Google menyediakan Google Forms, Google Sheets, dan Google Apps Script yang bekerja otomatis di awan secara gratis.
+            </p>
+          </div>
+
+          <div class="compare-grid">
+            <div class="panel">
+              <div class="panel-kicker">Pilihan 1 · Paling Cepat (Tanpa Coding Server)</div>
+              <h2 class="panel-title">Google Form Resmi + Trigger Apps Script</h2>
+              <ol class="step-list">
+                <li>
+                  Buat 2 (atau lebih) formulir di <strong>forms.google.com</strong> dengan kolom wajib <em>Alamat Email</em> dan <em>Nama Lengkap</em>.
+                </li>
+                <li>
+                  Di setiap Google Form, buka <strong>Responses → Link to Sheets → Select existing spreadsheet</strong>, lalu pilih <strong>1 file Google Spreadsheet yang sama</strong>. Google otomatis membuat tab terpisah (<code>Form Responses 1</code>, <code>Form Responses 2</code>, dst).
+                </li>
+                <li>
+                  Di Google Spreadsheet tersebut, klik <strong>Extensions → Apps Script</strong>, lalu tempel <strong>Skrip A</strong> di bawah (sudah mendukung multi-tab).
+                </li>
+                <li>
+                  Buka menu <strong>Triggers (ikon jam) → Add Trigger</strong>, pilih fungsi <code>kirimEmailDariGoogleForm</code> dengan event <strong>On form submit</strong>. Cukup <strong>1 trigger</strong> untuk semua tab!
+                </li>
+                <li>
+                  Salin masing-masing tautan Google Form Anda lalu tempelkan di menu <strong>Hubungkan Google</strong> pada website ini.
+                </li>
+              </ol>
+            </div>
+
+            <div class="panel">
+              <div class="panel-kicker">Pilihan 2 · Tampilan Menyatu Penuh</div>
+              <h2 class="panel-title">Formulir HTML Website → Apps Script Web App</h2>
+              <ol class="step-list">
+                <li>
+                  Buat <strong>1 Google Spreadsheet</strong> saja. <strong>Skrip B</strong> di bawah akan otomatis membuatkan tab berbeda untuk setiap formulir berdasarkan nama formulirnya.
+                </li>
+                <li>
+                  Buka <strong>Extensions → Apps Script</strong>, tempel <strong>Skrip B</strong> di bawah ini, lalu simpan.
+                </li>
+                <li>
+                  Klik <strong>Deploy → New deployment → Web app</strong>. Atur <em>Execute as: Me</em> dan <em>Who has access: Anyone</em>.
+                </li>
+                <li>
+                  Salin <strong>Web App URL</strong> (<code>https://script.google.com/macros/s/.../exec</code>) lalu tempel di menu <strong>Hubungkan Google</strong>.
+                </li>
+                <li>
+                  Setiap pengunjung mengisi salah satu formulir HTML di website ini, data masuk ke tab formulir terkait dan email konfirmasi otomatis terkirim dari akun Gmail Anda.
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="panel mb-6">
+            <div class="panel-kicker">Dropdown Dinamis dari 1 Spreadsheet</div>
+            <h2 class="panel-title">Membaca Pilihan Pondok (<code>DB ponpes</code>) &amp; Lomba (<code>db lomba</code>) Otomatis</h2>
+            <p class="text-muted">
+              Saat <strong>Skrip B</strong> (<code>doGet</code> + <code>doPost</code>) dipasang pada Google Spreadsheet Anda, website ini otomatis membaca daftar pondok dari sheet <strong><code>DB ponpes</code></strong> dan daftar cabang lomba dari sheet <strong><code>db lomba</code></strong> untuk mengisi pilihan dropdown pada formulir Pendaftaran Lomba MABAHIS. Ketika ada pondok baru mendaftar melalui Form Daftar Pondok, datanya langsung masuk ke sheet <strong><code>DB ponpes</code></strong> dan otomatis muncul di dropdown Form Lomba.
+            </p>
+          </div>
+
+          <div class="panel mb-6">
+            <div class="panel-kicker">Izin Akses Saat Deploy Pertama Kali</div>
+            <h2 class="panel-title">Cara Menyetujui Layar "Google hasn't verified this app"</h2>
+            <ol class="step-list">
+              <li>
+                Saat menekan <strong>Deploy</strong>, Google akan meminta izin karena skrip mengakses Spreadsheet dan mengirim email dari akun Anda (ini <strong>hanya muncul sekali untuk Anda sebagai pemilik</strong>, bukan untuk pengisi formulir).
+              </li>
+              <li>
+                Klik <strong>Authorize access</strong> (Tinjau Izin), lalu pilih akun Google Anda.
+              </li>
+              <li>
+                Jika muncul peringatan <em>"Google hasn't verified this app"</em>, klik tulisan kecil <strong>Advanced</strong> (Lanjutan) di kiri bawah.
+              </li>
+              <li>
+                Klik <strong>Go to [Nama Project] (unsafe)</strong> di bagian paling bawah. Langkah ini aman karena skrip berjalan di akun Google Anda sendiri.
+              </li>
+              <li>
+                Klik <strong>Allow</strong> (Izinkan). URL Web App akan langsung muncul untuk disalin ke menu <strong>Hubungkan Google</strong>.
+              </li>
+            </ol>
+          </div>
+
+          <div class="code-section">
+            <div class="code-header">
+              <div>
+                <h2 class="section-title-sm">Pilih Skrip Google Apps Script (Code.gs)</h2>
+                <p class="text-muted">
+                  Salin salah satu skrip sesuai metode yang Anda pilih, lalu tempel di menu Extensions → Apps Script pada Google Spreadsheet Anda.
+                </p>
+              </div>
+              <div class="segmented" id="script-tabs">
+                <button type="button" class="seg-btn" data-script="form-trigger">
+                  Skrip A: Untuk Google Form
+                </button>
+                <button type="button" class="seg-btn is-active" data-script="webapp-dopost">
+                  Skrip B: Web App (DB ponpes &amp; db lomba)
+                </button>
+              </div>
+            </div>
+
+            <div class="code-card">
+              <div class="code-toolbar">
+                <span class="mono-label" id="active-script-filename">Code.gs (Trigger Google Form)</span>
+                <div class="code-actions">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-script">
+                    Salin Kode
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" id="btn-download-script">
+                    Unduh Code.gs
+                  </button>
+                </div>
+              </div>
+              <pre class="code-block"><code id="apps-script-code"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 4: GOOGLE INTEGRATIONS CONFIG -->
+      <div id="view-integrations" class="view-section is-hidden">
+        <div class="container page-wrap">
+          <div class="page-head">
+            <p class="kicker">Pengaturan Koneksi Langsung</p>
+            <h1 class="page-title">Hubungkan Google Spreadsheet &amp; Google Form</h1>
+            <p class="page-lead">
+              Tempel URL Web App Google Apps Script atau tautan Google Form Anda di sini untuk menguji integrasi secara langsung dari browser. Pengaturan tersimpan di browser Anda dan dapat diekspor ke dalam file JavaScript saat siap diunggah ke hosting.
+            </p>
+          </div>
+
+          <div class="panel mb-6">
+            <h2 class="panel-title">1. Koneksi Formulir HTML → Google Spreadsheet (Apps Script URL)</h2>
+            <p class="text-muted mb-4">
+              Jika Anda memakai Skrip B (<code>doPost</code>), masukkan URL Web App dari Google Apps Script di bawah ini. Saat terisi, seluruh formulir HTML di website ini akan mengirim data langsung ke Google Spreadsheet Anda dan memicu email konfirmasi otomatis.
+            </p>
+            <div class="form-row-inline">
+              <input
+                type="url"
+                id="input-apps-script-url"
+                placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+              />
+              <button type="button" class="btn btn-primary" id="btn-save-script-url">
+                Simpan URL
+              </button>
+            </div>
+            <p class="status-note" id="script-url-status"></p>
+          </div>
+
+          <div class="panel mb-6">
+            <h2 class="panel-title">2. Tautan Google Form Resmi per Program (Mode Embed)</h2>
+            <p class="text-muted mb-4">
+              Jika Anda memilih memakai Google Form langsung, masukkan tautan bagikan Google Form (misalnya <code>https://docs.google.com/forms/d/e/.../viewform</code>) untuk masing-masing formulir di bawah ini.
+            </p>
+            <div id="google-form-links-list" class="gform-links-list"></div>
+            <div class="panel-footer-actions">
+              <button type="button" class="btn btn-primary" id="btn-save-gform-urls">
+                Simpan Semua Tautan Google Form
+              </button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2 class="panel-title">3. Ekspor Konfigurasi untuk Hosting Publik</h2>
+            <p class="text-muted mb-4">
+              Saat website statis ini diunggah ke hosting (GitHub Pages, Netlify, atau cPanel), salin potongan konfigurasi berikut ke bagian atas file <code>main.js</code> agar semua pengunjung langsung terhubung ke Google Spreadsheet Anda.
+            </p>
+            <pre class="code-block code-block-sm"><code id="exported-config-snippet"></code></pre>
+            <div class="panel-footer-actions">
+              <button type="button" class="btn btn-secondary" id="btn-copy-config">
+                Salin Konfigurasi JS
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 5: LOCAL SUBMISSION HISTORY -->
+      <div id="view-history" class="view-section is-hidden">
+        <div class="container page-wrap">
+          <div class="page-head-row">
+            <div>
+              <p class="kicker">Catatan Perangkat Ini</p>
+              <h1 class="page-title">Riwayat Pendaftaran &amp; Pratinjau Email</h1>
+              <p class="page-lead">
+                Menampilkan seluruh formulir yang pernah Anda kirim dari browser ini beserta status pengiriman ke Google Spreadsheet dan salinan email konfirmasinya.
+              </p>
+            </div>
+            <button type="button" class="btn btn-secondary" id="btn-clear-history">
+              Bersihkan Riwayat Lokal
+            </button>
+          </div>
+
+          <div id="history-list"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="brand">MABAHIS</div>
+          <p class="footer-note">
+            Portal Pendaftaran Pondok Pesantren &amp; Lomba MABAHIS.
+          </p>
+        </div>
+        <div class="footer-links">
+          <button type="button" data-nav="portal">Daftar Formulir</button>
+          <button type="button" data-nav="guide">Cara Kerja &amp; Skrip</button>
+          <button type="button" data-nav="integrations">Hubungkan Google</button>
+          <button type="button" data-nav="history">Riwayat Kiriman</button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- EMAIL PREVIEW MODAL -->
+    <div
+      id="email-modal"
+      class="modal-backdrop is-hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-email-subject"
+    >
+      <div class="modal-card">
+        <div class="modal-header">
+          <div>
+            <div class="modal-meta" id="modal-email-meta"></div>
+            <h3 class="modal-title" id="modal-email-subject">
+              Pratinjau Email Konfirmasi Otomatis
+            </h3>
+          </div>
+          <button
+            type="button"
+            class="icon-btn"
+            id="btn-close-modal"
+            aria-label="Tutup jendela pratinjau"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <iframe
+            id="modal-email-iframe"
+            title="Pratinjau isi email konfirmasi"
+            sandbox=""
+          ></iframe>
+        </div>
+        <div class="modal-footer">
+          <span class="text-muted">
+            Format email HTML ini identik dengan yang dikirimkan oleh Google Apps Script ke alamat email pengirim.
+          </span>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-close-modal-footer">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast is-hidden" role="status" aria-live="polite"></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

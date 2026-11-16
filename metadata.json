@@ -1,0 +1,6 @@
+{
+  "name": "FormulirKu — Portal Pendaftaran Online & Notifikasi Email",
+  "description": "Website portal formulir pendaftaran online multi-program yang dilengkapi sistem notifikasi email otomatis untuk setiap pengirim dan panel admin terintegrasi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
