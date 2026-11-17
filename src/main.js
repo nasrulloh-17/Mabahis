@@ -2,8 +2,9 @@
 // KONFIGURASI UTAMA (Sudah diisi dengan kedua tautan Google Form Anda)
 // ============================================================================
 const DEFAULT_CONFIG = {
-  // Tempel URL Web App Google Apps Script (Skrip B) agar dropdown membaca DB ponpes & db lomba
-  appsScriptWebAppUrl: '',
+  // URL Web App Google Apps Script (Skrip B) untuk membaca DB ponpes & db lomba serta kirim data + email
+  appsScriptWebAppUrl:
+    'https://script.google.com/macros/s/AKfycbyHtRbJa8RZoL_tlKgNTqXDe-PvKSsOzAWObuaBnXF3DYoPOukJWGFa2FyyhOWfGpN3MQ/exec',
   googleFormUrls: {
     'daftar-pondok':
       'https://docs.google.com/forms/d/e/1FAIpQLSfGD4jcFpDz4PfbdNT8k8t2cpnuX8RsOGKp7uxVkarjKs_I1A/viewform?usp=header',
