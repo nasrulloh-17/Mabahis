@@ -194,7 +194,7 @@ function kirimEmailDariGoogleForm(e) {
 
   var htmlBody =
     '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:1px solid #dce6e0;border-radius:12px;overflow:hidden;">' +
-      '<div style="background:#064e3b;color:#ffffff;padding:24px;">' +
+      '<div style="background:#064e3b;color:#ffffff;padding:24px;border-bottom:3px solid #c6922c;">' +
         '<div style="font-size:12px;color:#a7f3d0;margin-bottom:4px;">Notifikasi Otomatis · Database_Mabahis</div>' +
         '<h2 style="margin:0;font-size:20px;">' + escapeHtml(judulProgram) + '</h2>' +
       '</div>' +
@@ -437,7 +437,7 @@ function doPost(e) {
 
       var htmlBody =
         '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:1px solid #dce6e0;border-radius:12px;overflow:hidden;">' +
-          '<div style="background:#064e3b;color:#ffffff;padding:24px;">' +
+          '<div style="background:#064e3b;color:#ffffff;padding:24px;border-bottom:3px solid #c6922c;">' +
             '<div style="font-size:12px;color:#a7f3d0;margin-bottom:4px;">MABAHIS · Konfirmasi Otomatis</div>' +
             '<h2 style="margin:0;font-size:20px;">' + escapeHtml(payload.formTitle || sheet.getName()) + '</h2>' +
           '</div>' +
@@ -684,7 +684,7 @@ function buildConfirmationEmailHtml(form, payload) {
 <head><meta charset="utf-8" /></head>
 <body style="margin:0;padding:24px;background:#f7faf8;font-family:Arial,sans-serif;color:#0b1f17;">
   <div style="max-width:580px;margin:0 auto;background:#ffffff;border:1px solid #dce6e0;border-radius:12px;overflow:hidden;">
-    <div style="background:#064e3b;color:#ffffff;padding:24px 28px;">
+    <div style="background:#064e3b;color:#ffffff;padding:24px 28px;border-bottom:3px solid #c6922c;">
       <div style="font-size:12px;color:#a7f3d0;margin-bottom:4px;">MABAHIS · Konfirmasi Pendaftaran Otomatis</div>
       <h1 style="margin:0;font-size:19px;font-weight:600;">${escapeHtml(form.title)}</h1>
     </div>
@@ -726,6 +726,33 @@ function setView(viewName) {
   if (viewName === 'history') renderHistoryView();
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getFormLogoSvg(formId) {
+  if (formId === 'daftar-pondok') {
+    return `
+      <svg class="card-logo-svg" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="17" y="17" width="54" height="54" rx="4" stroke="rgba(167,243,208,0.42)" stroke-width="1.5" />
+        <rect x="17" y="17" width="54" height="54" rx="4" transform="rotate(45 44 44)" stroke="#d4a64a" stroke-width="1.5" />
+        <circle cx="44" cy="44" r="24" fill="rgba(6, 78, 59, 0.85)" stroke="rgba(212,166,74,0.45)" stroke-width="1" />
+        <path d="M44 24v4M44 28c-6.5 3.6-10 8.2-10 13.5V43h20v-1.5C54 36.2 50.5 31.6 44 28Z" stroke="#ecfdf5" stroke-width="1.75" stroke-linejoin="round" />
+        <path d="M31 43h26v16H31V43Z" stroke="#ecfdf5" stroke-width="1.75" stroke-linejoin="round" />
+        <path d="M40 59v-7.5a4 4 0 0 1 8 0V59" stroke="#e7c36b" stroke-width="1.75" stroke-linecap="round" />
+        <path d="M27 59h34" stroke="#a7f3d0" stroke-width="1.75" stroke-linecap="round" />
+        <circle cx="44" cy="22.5" r="1.5" fill="#e7c36b" />
+      </svg>`;
+  }
+
+  return `
+    <svg class="card-logo-svg" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="17" y="17" width="54" height="54" rx="4" stroke="rgba(167,243,208,0.42)" stroke-width="1.5" />
+      <rect x="17" y="17" width="54" height="54" rx="4" transform="rotate(45 44 44)" stroke="#d4a64a" stroke-width="1.5" />
+      <circle cx="44" cy="44" r="24" fill="rgba(6, 78, 59, 0.85)" stroke="rgba(212,166,74,0.45)" stroke-width="1" />
+      <path d="M34 31h20v9c0 5.6-4.5 10-10 10s-10-4.4-10-10v-9Z" stroke="#ecfdf5" stroke-width="1.75" stroke-linejoin="round" />
+      <path d="M34 34h-4.5c0 4.2 1.8 7 4.5 7.8M54 34h4.5c0 4.2-1.8 7-4.5 7.8" stroke="#a7f3d0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M44 50v7M37.5 57h13" stroke="#e7c36b" stroke-width="1.75" stroke-linecap="round" />
+      <path d="M44 35.5 45.4 38.4l3.1.4-2.2 2.2.5 3.1-2.8-1.5-2.8 1.5.5-3.1-2.2-2.2 3.1-.4L44 35.5Z" fill="#e7c36b" />
+    </svg>`;
 }
 
 function renderCatalog() {
@@ -785,22 +812,23 @@ function renderCatalog() {
   grid.innerHTML = filtered
     .map((form, index) => {
       const numLabel = String(index + 1).padStart(2, '0');
+      const logoAlt =
+        form.id === 'daftar-pondok' ? 'Logo Pendataan Pondok Pesantren' : 'Logo Lomba MABAHIS';
       return `
       <article class="form-card">
         <div>
-          <div class="form-card-media">
-            <img
-              src="${escapeHtml(form.image)}"
-              alt="${escapeHtml(form.title)}"
-              referrerpolicy="no-referrer"
-              onerror="this.style.display='none';this.nextElementSibling.classList.remove('is-hidden');"
-            />
-            <div class="img-fallback is-hidden">${escapeHtml(form.title)}</div>
+          <div class="form-card-media is-logo-slot" role="img" aria-label="${escapeHtml(logoAlt)}">
+            <div class="card-logo-backdrop">
+              ${getFormLogoSvg(form.id)}
+            </div>
           </div>
           <div class="form-card-body">
             <div class="meta-line">
               <span class="meta-index">${numLabel}</span>
-              <span aria-hidden="true">·</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="5" y="5" width="14" height="14" stroke="#047857" stroke-width="1.8" />
+                <rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)" stroke="#c6922c" stroke-width="1.8" />
+              </svg>
               <span class="meta-category">${escapeHtml(form.category)}</span>
             </div>
             <h3 class="form-card-title">${escapeHtml(form.title)}</h3>
@@ -1047,6 +1075,10 @@ function renderFormWorkspace(form, submittedReceipt = null) {
         </div>
         <div class="form-card-body">
           <div class="meta-line">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="5" y="5" width="14" height="14" stroke="#047857" stroke-width="1.8" />
+              <rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)" stroke="#c6922c" stroke-width="1.8" />
+            </svg>
             <span class="meta-category">${escapeHtml(form.category)}</span>
           </div>
           <h1 class="form-card-title">${escapeHtml(form.title)}</h1>

@@ -3,7 +3,7 @@
   --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-  /* 60-30-10 Emerald Modern Architectural Palette */
+  /* 60-30-10 Emerald & Warm Gold Islamic Modern Palette */
   --bg-canvas: #f5f9f6;
   --bg-surface: #ffffff;
   --bg-input: #fafcfb;
@@ -20,6 +20,9 @@
   --accent-bright: #10b981;
   --accent-soft: #ecfdf5;
   --accent-border: #a7f3d0;
+  --gold: #b48224;
+  --gold-bright: #c6922c;
+  --gold-soft: rgba(198, 146, 44, 0.14);
   --emerald-deep: #05241a;
   --emerald-dark: #093627;
 
@@ -36,10 +39,13 @@
   --danger-border: #fecaca;
 
   --shadow-sm: 0 1px 2px rgba(5, 36, 26, 0.04);
-  --shadow-card: 0 12px 30px -14px rgba(5, 36, 26, 0.1), 0 2px 6px -2px rgba(5, 36, 26, 0.04);
-  --shadow-card-hover: 0 24px 44px -16px rgba(4, 120, 87, 0.18), 0 6px 14px -4px rgba(5, 36, 26, 0.06);
-  --shadow-hero: 0 26px 56px -18px rgba(5, 36, 26, 0.24), 0 8px 18px -6px rgba(5, 36, 26, 0.08);
+  --shadow-card: 0 14px 32px -14px rgba(5, 36, 26, 0.1), 0 2px 6px -2px rgba(5, 36, 26, 0.04);
+  --shadow-card-hover: 0 24px 46px -16px rgba(4, 120, 87, 0.18), 0 6px 14px -4px rgba(5, 36, 26, 0.06);
+  --shadow-hero: 0 28px 58px -18px rgba(5, 36, 26, 0.26), 0 8px 18px -6px rgba(5, 36, 26, 0.08);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Seamless Islamic 8-Point Star Geometric Lattice (Rub el Hizb) */
+  --islamic-lattice-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke-width='0.9'%3E%3Crect x='24' y='24' width='48' height='48' stroke='%23047857' stroke-opacity='0.07'/%3E%3Crect x='24' y='24' width='48' height='48' transform='rotate(45 48 48)' stroke='%23c6922c' stroke-opacity='0.08'/%3E%3Ccircle cx='48' cy='48' r='10' stroke='%23047857' stroke-opacity='0.06'/%3E%3Cpath d='M0 48h14M82 48h14M48 0v14M48 82v14' stroke='%23047857' stroke-opacity='0.05'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 *,
@@ -56,6 +62,8 @@ body {
   margin: 0;
   font-family: var(--font-body);
   background-color: var(--bg-canvas);
+  background-image: var(--islamic-lattice-svg);
+  background-size: 96px 96px;
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
@@ -103,10 +111,10 @@ textarea {
   position: sticky;
   top: 0;
   z-index: 40;
-  background-color: rgba(245, 249, 246, 0.84);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(218, 229, 222, 0.9);
+  background-color: rgba(245, 249, 246, 0.86);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(218, 229, 222, 0.92);
 }
 
 .topbar-inner {
@@ -312,8 +320,7 @@ textarea:focus-visible {
   position: relative;
   overflow: hidden;
   background-color: var(--bg-surface);
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 64px 0 68px;
+  padding: 68px 0 72px;
 }
 
 .hero::before {
@@ -321,12 +328,11 @@ textarea:focus-visible {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(4, 120, 87, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(4, 120, 87, 0.045) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 75% at 70% 30%, #000 10%, transparent 78%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 70% 30%, #000 10%, transparent 78%);
+  background-image: var(--islamic-lattice-svg);
+  background-size: 96px 96px;
+  opacity: 0.95;
+  mask-image: radial-gradient(ellipse 85% 85% at 72% 38%, #000 18%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 72% 38%, #000 18%, transparent 80%);
 }
 
 .hero::after {
@@ -335,8 +341,8 @@ textarea:focus-visible {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 55% 60% at 88% 12%, rgba(16, 185, 129, 0.13), transparent 72%),
-    radial-gradient(ellipse 40% 45% at 8% 85%, rgba(4, 120, 87, 0.06), transparent 70%);
+    radial-gradient(ellipse 58% 65% at 90% 10%, rgba(16, 185, 129, 0.13), transparent 72%),
+    radial-gradient(ellipse 42% 45% at 10% 85%, rgba(198, 146, 44, 0.08), transparent 72%);
 }
 
 .hero .container {
@@ -359,6 +365,9 @@ textarea:focus-visible {
 }
 
 .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   font-weight: 600;
   color: var(--accent);
@@ -366,8 +375,12 @@ textarea:focus-visible {
   margin-bottom: 14px;
 }
 
+.kicker-ornament {
+  flex-shrink: 0;
+}
+
 .hero-title {
-  font-size: clamp(2.3rem, 4vw, 3.4rem);
+  font-size: clamp(2.3rem, 4vw, 3.45rem);
   font-weight: 700;
   line-height: 1.07;
   letter-spacing: -0.035em;
@@ -395,11 +408,23 @@ textarea:focus-visible {
   position: relative;
   grid-column: span 6;
   aspect-ratio: 16 / 10;
-  border-radius: 20px;
+  border-radius: 22px;
   overflow: hidden;
-  border: 1px solid rgba(6, 95, 70, 0.14);
+  border: 1px solid rgba(198, 146, 44, 0.38);
   background-color: var(--emerald-deep);
-  box-shadow: var(--shadow-hero);
+  box-shadow:
+    var(--shadow-hero),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(231, 195, 107, 0.28);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .hero-media img {
@@ -416,25 +441,25 @@ textarea:focus-visible {
   pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(5, 36, 26, 0.84) 0%,
-    rgba(5, 36, 26, 0.25) 42%,
-    transparent 75%
+    rgba(5, 36, 26, 0.88) 0%,
+    rgba(5, 36, 26, 0.28) 44%,
+    transparent 76%
   );
 }
 
 .hero-media-caption {
   position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 18px;
-  z-index: 2;
+  left: 24px;
+  right: 24px;
+  bottom: 20px;
+  z-index: 3;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(236, 253, 245, 0.94);
+  color: rgba(236, 253, 245, 0.96);
   pointer-events: none;
 }
 
@@ -453,9 +478,47 @@ textarea:focus-visible {
   color: var(--accent-hover);
 }
 
+/* ISLAMIC ARCHITECTURAL SECTION DIVIDER */
+.islamic-divider {
+  background: linear-gradient(to bottom, var(--bg-surface) 0%, var(--bg-surface) 50%, transparent 50%);
+  padding: 4px 0;
+}
+
+.islamic-divider-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(4, 120, 87, 0.28) 25%,
+    rgba(198, 146, 44, 0.45) 50%,
+    rgba(4, 120, 87, 0.28) 75%,
+    transparent
+  );
+}
+
+.divider-emblem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
 /* CATALOG */
 .catalog-section {
-  padding: 60px 0 80px;
+  padding: 48px 0 84px;
 }
 
 .catalog-header {
@@ -467,7 +530,7 @@ textarea:focus-visible {
 }
 
 .section-title {
-  font-size: clamp(1.6rem, 2.5vw, 2rem);
+  font-size: clamp(1.6rem, 2.5vw, 2.05rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text-primary);
@@ -492,9 +555,10 @@ textarea:focus-visible {
 }
 
 .form-card {
+  position: relative;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-radius: 22px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -506,10 +570,27 @@ textarea:focus-visible {
     box-shadow 200ms var(--ease-out);
 }
 
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 2;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold-bright) 50%, var(--accent) 100%);
+  opacity: 0.75;
+  transition: opacity 200ms var(--ease-out);
+}
+
 .form-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent-border);
   box-shadow: var(--shadow-card-hover);
+}
+
+.form-card:hover::before {
+  opacity: 1;
 }
 
 .form-card-media {
@@ -517,6 +598,42 @@ textarea:focus-visible {
   background-color: var(--bg-muted);
   overflow: hidden;
   border-bottom: 1px solid var(--border-subtle);
+}
+
+.form-card-media.is-logo-slot {
+  aspect-ratio: auto;
+  height: 176px;
+  position: relative;
+  background: linear-gradient(145deg, #05241a 0%, #064e3b 62%, #0a3c2c 100%);
+}
+
+.form-card-media.is-logo-slot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke-width='0.8'%3E%3Crect x='16' y='16' width='32' height='32' stroke='%23a7f3d0' stroke-opacity='0.1'/%3E%3Crect x='16' y='16' width='32' height='32' transform='rotate(45 32 32)' stroke='%23e7c36b' stroke-opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 64px 64px;
+  pointer-events: none;
+}
+
+.card-logo-backdrop {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-logo-svg {
+  width: 96px;
+  height: 96px;
+  transition: transform 280ms var(--ease-out);
+}
+
+.form-card:hover .card-logo-svg {
+  transform: scale(1.06);
 }
 
 .form-card-media img {
@@ -582,7 +699,7 @@ textarea:focus-visible {
 /* WORKSPACE / ACTIVE FORM */
 .workspace-wrap {
   padding-top: 36px;
-  padding-bottom: 80px;
+  padding-bottom: 84px;
 }
 
 .back-link {
@@ -618,7 +735,8 @@ textarea:focus-visible {
   grid-column: span 5;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-top: 3px solid var(--accent);
+  border-radius: 22px;
   overflow: hidden;
   box-shadow: var(--shadow-card);
 }
@@ -627,7 +745,8 @@ textarea:focus-visible {
   grid-column: span 7;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-top: 3px solid var(--gold-bright);
+  border-radius: 22px;
   padding: 34px;
   box-shadow: var(--shadow-card);
 }
@@ -805,7 +924,8 @@ textarea:focus-visible {
   margin: 0 auto;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-top: 3px solid var(--gold-bright);
+  border-radius: 22px;
   padding: 36px;
   box-shadow: var(--shadow-card);
 }
@@ -851,7 +971,7 @@ textarea:focus-visible {
 /* GUIDE, INTEGRATIONS & HISTORY PAGES */
 .page-wrap {
   padding-top: 48px;
-  padding-bottom: 80px;
+  padding-bottom: 84px;
 }
 
 .page-head {
@@ -959,7 +1079,7 @@ textarea:focus-visible {
 .code-toolbar {
   padding: 14px 20px;
   background-color: var(--emerald-dark);
-  border-bottom: 1px solid rgba(167, 243, 208, 0.12);
+  border-bottom: 1px solid rgba(198, 146, 44, 0.25);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1048,7 +1168,7 @@ textarea:focus-visible {
 .history-item {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 22px 26px;
   margin-bottom: 14px;
   display: flex;
@@ -1102,7 +1222,8 @@ textarea:focus-visible {
 .modal-card {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-top: 3px solid var(--gold-bright);
+  border-radius: 22px;
   width: 100%;
   max-width: 680px;
   max-height: 90vh;
@@ -1173,9 +1294,21 @@ textarea:focus-visible {
 
 /* FOOTER */
 .site-footer {
+  position: relative;
   background-color: var(--bg-surface);
   border-top: 1px solid var(--border-subtle);
-  padding: 34px 0;
+  padding: 36px 0;
+}
+
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 30%, var(--gold-bright) 50%, var(--accent) 70%, transparent 100%);
+  opacity: 0.55;
 }
 
 .footer-inner {
@@ -1221,7 +1354,7 @@ textarea:focus-visible {
   z-index: 60;
   background-color: var(--emerald-deep);
   color: #ffffff;
-  border: 1px solid var(--accent-border);
+  border: 1px solid rgba(198, 146, 44, 0.5);
   padding: 12px 18px;
   border-radius: 12px;
   font-size: 13px;
@@ -1255,7 +1388,7 @@ textarea:focus-visible {
 
 @media (max-width: 720px) {
   .hero {
-    padding: 40px 0 44px;
+    padding: 40px 0 46px;
   }
 
   .nav-links {
